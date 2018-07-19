@@ -4,7 +4,7 @@
 namespace util
 {
 
-inline std::string to_string(double v, int precision = 3)
+static inline std::string to_string(double v, int precision = 3)
 {
 	std::stringstream ss;
 	ss.precision(precise);
@@ -14,6 +14,8 @@ inline std::string to_string(double v, int precision = 3)
 
 	return out;
 }
+
+
 
 }
 
