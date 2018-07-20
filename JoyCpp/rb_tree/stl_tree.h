@@ -104,20 +104,20 @@ struct __rb_tree_base_iterator
 
   void increment()
   {
-    if (node->right != 0) {
+    if (node->right != 0) {//若右孩子存在，则取得右孩子； 为什么这么做？回忆二叉搜索树性质；
       node = node->right;
-      while (node->left != 0)
+      while (node->left != 0)//若右孩子有左孩子，则向左一直取到底，到叶子节点为止；
         node = node->left;
     }
-    else {
-      base_ptr y = node->parent;
-      while (node == y->right) {
+    else {//若节点没有右孩子，
+      base_ptr y = node->parent;//y指向其父节点
+      while (node == y->right) {//当前节点是其父节点的右孩子,一直向左上取值
         node = y;
-        y = y->parent;
-      }
-      if (node->right != y)
-        node = y;
-    }
+        y = y->parent;//继续向左上查找
+      }//直到找到node不再是右孩子的情况
+      if (node->right != y)//若此时node右孩子不为其父节点，node=y（父节点）
+        node = y;//也就是说，若node右孩子等于其父节点，则node=node
+    }//那么问题来了，什么情况下node的右孩子会等于其父节点，换句话说，爷爷和孙子同辈？
   }
 
   void decrement()
