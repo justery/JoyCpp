@@ -124,7 +124,7 @@ struct __rb_tree_base_iterator
   {
     if (node->color == __rb_tree_red &&
         node->parent->parent == node)
-      node = node->right;			// node = 其右孩子；为什么右孩子，会成为回退节点？举证#
+      node = node->right;			// node = 其右孩子；为什么右孩子，会成为回退节点？举证#  ; 另外，为什么该节点不是root？
     else if (node->left != 0) { // 如左孩子非空
       base_ptr y = node->left; // node = 其左孩子
       while (y->right != 0)
