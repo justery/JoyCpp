@@ -933,13 +933,13 @@ rb_tree<Key, Value, KeyOfValue, Compare, Alloc>::find(const Key& k) {
   link_type x = root();        // Current node. 
 
   while (x != 0) 
-    if (!key_compare(key(x), k))
-      y = x, x = left(x);
+    if (!key_compare(key(x), k))   // x >= k,(如同喝酒猜数字的时候，反馈说“太大了”)，接下来取一个比当前x小的结点成为新x，然后继续判断；
+      y = x, x = left(x);          // y -> 上个x(即>=k的那个值),y >= k 也就是 k <=y;
     else
-      x = right(x);
+      x = right(x); // 
 
   iterator j = iterator(y);   
-  return (j == end() || key_compare(k, key(j.node))) ? end() : j;
+  return (j == end() || key_compare(k, key(j.node))) ? end() : j; // 注意这里的false，是为了消 < ；下面为const版本，略；
 }
 
 template <class Key, class Value, class KeyOfValue, class Compare, class Alloc>
