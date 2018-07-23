@@ -726,20 +726,20 @@ rb_tree<Key, Value, KeyOfValue, Compare, Alloc>::insert_unique(const Value& v)
   link_type y = header;
   link_type x = root();
   bool comp = true;
-  while (x != 0) {
+  while (x != 0) { // 开始
     y = x;
     comp = key_compare(KeyOfValue()(v), key(x));
-    x = comp ? left(x) : right(x);
+    x = comp ? left(x) : right(x); // 遇见大家伙 则往左去；
   }
-  iterator j = iterator(y);   
-  if (comp)
-    if (j == begin())     
+  iterator j = iterator(y);   //离开循环时候,x -> NIL。y就是那个可以插入的结点；
+  if (comp) // 插左
+    if (j == begin()) // 插入点之父结点为最左结点；    
       return pair<iterator,bool>(__insert(x, y, v), true);
     else
-      --j;
-  if (key_compare(key(j.node), KeyOfValue()(v)))
+      --j; // end() - 1 = what?
+  if (key_compare(key(j.node), KeyOfValue()(v))) // 父-祖链上有空隙，则可以插入；否则意味着值的重复；#135 ；；；//此处左插右插都有可能
     return pair<iterator,bool>(__insert(x, y, v), true);
-  return pair<iterator,bool>(j, false);
+  return pair<iterator,bool>(j, false); // 结点不允许重复,重复则插入无效
 }
 
 
