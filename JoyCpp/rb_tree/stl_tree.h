@@ -244,23 +244,26 @@ __rb_tree_rotate_right(__rb_tree_node_base* x, __rb_tree_node_base*& root)
   x->parent = y;
 }
 
+/*
+* 逻辑依据，算法导论: PAGE.175 (page.167)
+*/
 inline void 
 __rb_tree_rebalance(__rb_tree_node_base* x, __rb_tree_node_base*& root)
 {
-  x->color = __rb_tree_red;
-  while (x != root && x->parent->color == __rb_tree_red) {
-    if (x->parent == x->parent->parent->left) {
-      __rb_tree_node_base* y = x->parent->parent->right;
-      if (y && y->color == __rb_tree_red) {
-        x->parent->color = __rb_tree_black;
-        y->color = __rb_tree_black;
-        x->parent->parent->color = __rb_tree_red;
-        x = x->parent->parent;
+  x->color = __rb_tree_red; // 新插入节点为红，为什么？
+  while (x != root && x->parent->color == __rb_tree_red) { // x非root且父结点为红色，则需要调整； 若其父结点为黑色，则根本不需要调整，为什么？
+    if (x->parent == x->parent->parent->left) { // 父结点身为左孩子
+      __rb_tree_node_base* y = x->parent->parent->right; // y <- 叔结点
+      if (y && y->color == __rb_tree_red) { // ***** 叔为红色 , case 1
+        x->parent->color = __rb_tree_black; 			// 父结点 <- 黑色
+        y->color = __rb_tree_black;         			// 叔结点 <- 黑色
+        x->parent->parent->color = __rb_tree_red;		// 祖父 <- 红色
+        x = x->parent->parent;							// 祖父结点变成新的x，为什么？xsqj
       }
-      else {
-        if (x == x->parent->right) {
-          x = x->parent;
-          __rb_tree_rotate_left(x, root);
+      else {                                // ***** 叔结点为黑色
+        if (x == x->parent->right) { // 身为右结点的情况，左右的情况，按理需要两次旋转，下面走着瞧; 此处即是case 2 
+          x = x->parent;             //将x <- p[x] 
+          __rb_tree_rotate_left(x, root); // 第一次旋转出现了：以x为链的头，进行树的左旋操作
         }
         x->parent->color = __rb_tree_black;
         x->parent->parent->color = __rb_tree_red;
@@ -286,7 +289,7 @@ __rb_tree_rebalance(__rb_tree_node_base* x, __rb_tree_node_base*& root)
       }
     }
   }
-  root->color = __rb_tree_black;
+  root->color = __rb_tree_black;     // 简化处理，不论前面是啥啥变化，最终root结点必须为黑色。
 }
 
 inline __rb_tree_node_base*
