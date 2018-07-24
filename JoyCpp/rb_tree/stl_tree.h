@@ -740,7 +740,7 @@ rb_tree<Key, Value, KeyOfValue, Compare, Alloc>::insert_unique(const Value& v)
       return pair<iterator,bool>(__insert(x, y, v), true);
     else
       --j; // end() - 1 = what?
-  if (key_compare(key(j.node), KeyOfValue()(v))) // 父-祖链上有空隙，则可以插入；否则意味着值的重复；#135 ；；；//此处左插右插都有可能
+  if (key_compare(key(j.node), KeyOfValue()(v))) // 父-祖链上有空隙，则可以插入；否则意味着值的重复；#example_insert_0.png ；；；//此处左插右插都有可能
     return pair<iterator,bool>(__insert(x, y, v), true);
   return pair<iterator,bool>(j, false); // 结点不允许重复,重复则插入无效
 }
