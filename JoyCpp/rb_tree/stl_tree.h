@@ -265,9 +265,9 @@ __rb_tree_rebalance(__rb_tree_node_base* x, __rb_tree_node_base*& root)
           x = x->parent;             //将x <- p[x] 
           __rb_tree_rotate_left(x, root); // 第一次旋转出现了：以x为链的头，进行树的左旋操作
         }
-        x->parent->color = __rb_tree_black;
-        x->parent->parent->color = __rb_tree_red;
-        __rb_tree_rotate_right(x->parent->parent, root);
+        x->parent->color = __rb_tree_black;  // 父结点 <- 黑色
+        x->parent->parent->color = __rb_tree_red; // 祖父结点 <- 红色
+        __rb_tree_rotate_right(x->parent->parent, root); // x <- 祖父结点,进行右边旋转
       }
     }
     else {
