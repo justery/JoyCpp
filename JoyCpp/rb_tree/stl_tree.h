@@ -206,6 +206,11 @@ inline Value* value_type(const __rb_tree_iterator<Value, Ref, Ptr>&) {
 
 #endif /* __STL_CLASS_PARTIAL_SPECIALIZATION */
 
+/*******************************
+ x
+    y
+(c)    a
+*******************************/
 inline void 
 __rb_tree_rotate_left(__rb_tree_node_base* x, __rb_tree_node_base*& root)
 {
@@ -225,6 +230,11 @@ __rb_tree_rotate_left(__rb_tree_node_base* x, __rb_tree_node_base*& root)
   x->parent = y;
 }
 
+/*******************************
+        x
+    y
+a      (c)
+*******************************/
 inline void 
 __rb_tree_rotate_right(__rb_tree_node_base* x, __rb_tree_node_base*& root)
 {
